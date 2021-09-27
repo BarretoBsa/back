@@ -3,7 +3,8 @@ import { Router } from 'express';
 const routes = Router();
 
 
-routes.get('/animal',(req, resp)=>{
+routes.get('/animal',
+(req, resp)=>{
     const query = req.query;
     console.log('get aqui', query)
     return resp.json({ok: "get"});
