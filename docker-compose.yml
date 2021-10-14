@@ -1,0 +1,30 @@
+version: '3'
+
+services: 
+  recipes-db:
+    image: postgres:12
+    container_name: recipes-db
+    hostname: recipes-db
+    env_file: 
+      - ./.env
+    ports: 
+      - '65432:5432'
+  recipes-api:
+    image: node:14
+    container_name: recipes-api
+    volumes:
+      - ./src:/home/app/src
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    ports:
+       - '3000:3000'
+    environment:
+        NODE_ENV: development
+        WAIT_HOSTS: recipes-db:5432
+    depends_on: 
+       - recipes-db
+    command: sh -c "npm run db:migrate && npm run db:seed && npm run start"
+
+      
+

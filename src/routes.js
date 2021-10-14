@@ -1,31 +1,29 @@
 import { Router } from 'express';
+import UserController from './app/controllers/UserController';
+import AnimalController from './app/controllers/AnimalController'
+import AuthController from './app/controllers/AuthController'
 
+import authMiddleware from './app/middleware/authMiddleware'
 const routes = Router();
 
 
-routes.get('/animal',
-(req, resp)=>{
-    const query = req.query;
-    console.log('get aqui', query)
-    return resp.json({ok: "get"});
-});
+routes.post('/auth', AuthController.create);
+routes.post('/users', UserController.create);
+
+routes.use(authMiddleware);
+
+routes.get('/users', UserController.list);
+routes.get('/users/:id', UserController.get);
+routes.put('/users', UserController.update);
+routes.delete('/users/:id', UserController.delete);
+routes.post('/animals', AnimalController.create);
+routes.put('/animals', AnimalController.update);
+routes.get('/animals', AnimalController.list);
+routes.get('/animals/:id', AnimalController.get);
+routes.delete('/animals/:id', AnimalController.delete);
 
 
-// routes.put("/animal/:id",(req, resp)=>{
-//     const params = req.params
-//     return resp.json({ok: "ola"});
-// });
 
-
-// routes.post("/animal",(req, resp)=>{
-//     const body = req.body;
-//     return resp.json({ok: "ola"});
-// });
-
-
-// routes.delete("/animal",(req, resp)=>{
-//     return resp.json({ok: "ola"});
-// });
 
 
 export default routes;
